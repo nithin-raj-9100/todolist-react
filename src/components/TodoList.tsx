@@ -9,11 +9,14 @@ const TodoList: React.FC<TodoListProps> = ({
   onDelete,
   onToggle,
   onDeleteAllForDate,
+  searchQuery,
 }) => {
   const groupedTodos = groupTodosByDate(todos);
   const dates = sortDates(Object.keys(groupedTodos));
 
   if (todos.length === 0) {
+    const isSearchActive = searchQuery && searchQuery.trim().length > 0;
+
     return (
       <div className="text-center py-12">
         <div className="max-w-sm mx-auto">
@@ -27,14 +30,20 @@ const TodoList: React.FC<TodoListProps> = ({
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={1}
-              d="M9 5H7a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+              d={
+                isSearchActive
+                  ? "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  : "M9 5H7a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+              }
             />
           </svg>
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-            No todos yet
+            {isSearchActive ? "No matching todos found" : "No todos yet"}
           </h3>
           <p className="text-gray-500 dark:text-gray-400 mb-4">
-            Get started by creating your first todo above.
+            {isSearchActive
+              ? `No todos match "${searchQuery}". Try adjusting your search terms.`
+              : "Get started by creating your first todo above."}
           </p>
         </div>
       </div>
@@ -52,6 +61,7 @@ const TodoList: React.FC<TodoListProps> = ({
           onDelete={onDelete}
           onToggle={onToggle}
           onDeleteAll={() => onDeleteAllForDate(date)}
+          searchQuery={searchQuery}
         />
       ))}
     </div>

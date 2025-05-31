@@ -24,6 +24,7 @@ export interface TodoItemProps {
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
   onToggle: (id: string) => void;
+  searchQuery?: string;
 }
 
 export interface TodoListProps {
@@ -32,6 +33,7 @@ export interface TodoListProps {
   onDelete: (id: string) => void;
   onToggle: (id: string) => void;
   onDeleteAllForDate: (date: string) => void;
+  searchQuery?: string;
 }
 
 export interface TodoFormProps {
@@ -47,6 +49,13 @@ export interface DateGroupProps {
   onDelete: (id: string) => void;
   onToggle: (id: string) => void;
   onDeleteAll: () => void;
+  searchQuery?: string;
+}
+
+export interface SearchBarProps {
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  onClearSearch: () => void;
 }
 
 export type UseLocalStorageReturn<T> = [

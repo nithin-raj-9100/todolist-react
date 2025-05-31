@@ -5,6 +5,7 @@ import {
   isToday,
   formatDateDDMMYYYY,
 } from "../utils/dateHelpers";
+import { highlightText } from "../utils/textHighlight";
 import type { TodoItemProps } from "../types/todo";
 
 const TodoItem: React.FC<TodoItemProps> = ({
@@ -12,6 +13,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
   onEdit,
   onDelete,
   onToggle,
+  searchQuery,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -92,7 +94,9 @@ const TodoItem: React.FC<TodoItemProps> = ({
                   : "text-gray-900 dark:text-gray-100"
               }`}
             >
-              {todo.title}
+              {searchQuery
+                ? highlightText(todo.title, searchQuery)
+                : todo.title}
             </h3>
 
             <div className="flex items-center gap-2 shrink-0">
@@ -119,9 +123,16 @@ const TodoItem: React.FC<TodoItemProps> = ({
                     : "text-gray-600 dark:text-gray-300"
                 }`}
               >
-                {isExpanded || todo.description.length <= 100
-                  ? todo.description
-                  : `${todo.description.substring(0, 100)}...`}
+                {(() => {
+                  const description =
+                    isExpanded || todo.description.length <= 100
+                      ? todo.description
+                      : `${todo.description.substring(0, 100)}...`;
+
+                  return searchQuery
+                    ? highlightText(description, searchQuery)
+                    : description;
+                })()}
               </p>
 
               {todo.description.length > 100 && (

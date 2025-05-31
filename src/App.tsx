@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Layout from "./components/Layout";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
+import SearchBar from "./components/SearchBar";
 import { useTodos } from "./hooks/useTodos";
 import { useTheme } from "./hooks/useTheme";
+import { useSearch } from "./hooks/useSearch";
 import type { Todo } from "./types/todo";
 import "./styles/globals.css";
 
@@ -18,6 +20,9 @@ const App: React.FC = () => {
   } = useTodos();
   useTheme();
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+
+  const { searchQuery, filteredTodos, handleSearchChange, handleClearSearch } =
+    useSearch(todos);
 
   const handleAddTodo = async (
     todoData: Omit<Todo, "id" | "createdAt" | "updatedAt">
@@ -69,12 +74,19 @@ const App: React.FC = () => {
           onCancel={handleCancelEdit}
         />
 
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          onClearSearch={handleClearSearch}
+        />
+
         <TodoList
-          todos={todos}
+          todos={filteredTodos}
           onEdit={handleEditTodo}
           onDelete={handleDeleteTodo}
           onToggle={handleToggleTodo}
           onDeleteAllForDate={handleDeleteAllForDate}
+          searchQuery={searchQuery}
         />
       </div>
     </Layout>

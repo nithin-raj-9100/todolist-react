@@ -10,6 +10,7 @@ const DateGroup: React.FC<DateGroupProps> = ({
   onDelete,
   onToggle,
   onDeleteAll,
+  searchQuery,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -194,6 +195,7 @@ const DateGroup: React.FC<DateGroupProps> = ({
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onToggle={onToggle}
+                    searchQuery={searchQuery}
                   />
                 ))}
               </div>
